@@ -11,8 +11,8 @@ jorge_env
 
 ### DotnetCore ###
 # .NET Core build folders
-**/bin/*
-**/obj/*
+WarFront/bin/
+WarFront/obj/
 
 # Common node modules locations
 /WarFront/node_modules
