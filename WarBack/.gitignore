@@ -19,3 +19,7 @@ WarFront/obj/
 /WarFront/wwwroot/node_modules
 
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore
+
+
+# Django ignores
+**/__pycache__/**
