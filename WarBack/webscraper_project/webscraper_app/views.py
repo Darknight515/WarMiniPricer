@@ -3,11 +3,8 @@ from bs4 import BeautifulSoup
 from django.http import JsonResponse
 
 import requests
-# Create your views here.
 
-
-
-def scrape_website(url):
+def scrape_shoparmada_astra_militarum(url):
     response = requests.get(url)
     print("URL Response Status:", response.status_code)
 
@@ -33,5 +30,5 @@ def scrape_website(url):
 
 def scrape_view(request):
     url = 'https://shoparmada.com/collections/gw40k-astra-militarum'
-    data = scrape_website(url)
+    data = scrape_shoparmada_astra_militarum(url)
     return JsonResponse({'products': data})
