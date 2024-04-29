@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "WE+14nzY/pHulmNzvDDlh8L7YnpzV2A0GVWHpZSUyh60EZztyBO4B22PwImPX918RDMDMmlRVrubooa9R125OQ==",
+  "dgSpecHash": "+QFG8hQ00/OIfxQiI7xqqKaBhAkFGmcez3va1SOVFFRrOhEMpHiFPioUJwJTVLp4ZEb7KanvJZ7Var5H7EY5qw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jorge\\Desktop\\Projects\\Personal\\WarMinisTracker\\WarFront\\WarFront.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/brandon/Desktop/Projects/Personal/WarMiniPricer/WarFront/WarFront.csproj",
+  "expectedPackageFiles": [
+    "/home/brandon/.nuget/packages/microsoft.netcore.app.ref/3.1.0/microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "/home/brandon/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "/home/brandon/.nuget/packages/microsoft.netcore.app.host.linux-x64/3.1.32/microsoft.netcore.app.host.linux-x64.3.1.32.nupkg.sha512"
+  ],
   "logs": []
 }
