@@ -1,2 +1,5 @@
 WarBack/webscraper_project/webscraper_app/migrations/*
 WarBack/webscraper_project/db.sqlite3
+.vscode/settings.json
+WarFront/obj/Debug/*
+WarFront/obj/Debug/netcoreapp3.1/WarFront.AssemblyInfo.cs
