@@ -16,8 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from webscraper_app.views import scrape_view
+#remember to cirrectly map the location of the project 
+from webscraper_app.views import mini_data_list
+# from webscraper_app.views import scrape_view
+# from webscraper_app.models import mini_data_view
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('scrape/',scrape_view, name='scrape')
+    path('mini-data-list/', mini_data_list, name='mini_data_list'),
+    # path('scrape/',scrape_view, name='scrape')
+    # decalre the path of the desired model function
 ]
