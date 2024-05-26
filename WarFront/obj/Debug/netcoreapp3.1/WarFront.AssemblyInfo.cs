@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WarFront")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df88bca7e9c949ee7279fd6b62861094417401cf")]
 [assembly: System.Reflection.AssemblyProductAttribute("WarFront")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WarFront")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
