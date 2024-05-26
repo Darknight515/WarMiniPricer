@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from .models import MiniData
 
 from pathlib import Path
+import os
+import json
 
 
 def mini_data_list(request):
@@ -17,8 +19,18 @@ def mini_data_list(request):
     return JsonResponse({'mini_data_list': mini_data_list}, safe=False)
 # def mini_data_view(request):
 
+def read_spider_data(request):
+    # TODO: run this as a global variable, need access in more functions later.
+    # TODO: parse file names to use specified shop name (if necessary).
+    data_directory = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
+    json_data = []
+    for filename in os.listdir(data_directory):
+        if filename.endswith('.json'):
+            with open(os.path.join(data_directory, filename), 'r') as f:
+                json_data.append(json.load(f))
 
-
+    context = {'json_data': json_data}
+    return render(request, 'your_template.html', context)
 # def scrape_shoparmada_astra_militarum(url):
 #     response = request.get(url)
 #     print("URL Response Status:", response.status_code)
