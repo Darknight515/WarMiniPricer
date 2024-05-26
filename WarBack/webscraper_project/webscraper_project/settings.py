@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'webscraper_app',  #shows where the application is 
+    'webscraper_app',  #shows where the application is and shows the location of the defined models
+    'rest_framework',
     
 ]
 
@@ -76,10 +77,16 @@ WSGI_APPLICATION = 'webscraper_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": {
+        "ENGINE": "mssql",
+        "NAME": "Warhammer",
+        "USER": "sa",
+        "PASSWORD": "@Ozzy876",
+        "HOST": "localhost",
+        "PORT": "1435",
+        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
+        },
+    },
 }
 
 

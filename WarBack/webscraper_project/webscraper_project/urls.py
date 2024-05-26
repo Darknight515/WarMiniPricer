@@ -15,9 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from webscraper_app.views import scrape_view
+from django.urls import path, include, re_path
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('scrape/',scrape_view, name='scrape')
+    path('minis/', include('webscraper_app.urls')),
+    # path('scrape/',scrape_view, name='scrape')
+    # decalre the path of the desired model function
 ]

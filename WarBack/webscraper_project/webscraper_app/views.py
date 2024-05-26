@@ -1,34 +1,65 @@
+from urllib import request
 from django.shortcuts import render
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 from django.http import JsonResponse
+from .models import MiniData
+from .serializers import MiniSerializer
+from pathlib import Path
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
-import requests
+import os
+import json
 
-def scrape_shoparmada_astra_militarum(url):
-    response = requests.get(url)
-    print("URL Response Status:", response.status_code)
+data_directory = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'webscraper_app/data')
 
-    soup = BeautifulSoup(response.text, 'html.parser')
+
+@api_view(['GET','POST'])
+def mini_list(request):
+
+    if request.method == 'GET':
+        mini = MiniData.objects.all()
+        serializer = MiniSerializer(mini, many = True)
+        # return JsonResponse({"minis": serializer.data})
+        return Response(serializer.data)
     
-    # Extracting all product details divs
-    product_details_divs = soup.find_all('div', class_='product-details')
-    print("Product Details Elements found: ", bool(product_details_divs))
-    
-    data = []
-    for product in product_details_divs:
-        # Extract product name
-        product_name_tag = product.find('span', class_='title')
-        product_name = product_name_tag.get_text().strip() if product_name_tag else "Name not found"
-        
-        # Extract current price
-        current_price_tag = product.find('span', class_='current_price')
-        current_price = current_price_tag.find('span', class_='money').get_text().strip() if current_price_tag else "Price not found"
-        
-        data.append({'product_name': product_name, 'current_price': current_price})
-    
-    return data
+    if request.method == 'POST':
+        serializer = MiniSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-def scrape_view(request):
-    url = 'https://shoparmada.com/collections/gw40k-astra-militarum'
-    data = scrape_shoparmada_astra_militarum(url)
-    return JsonResponse({'products': data})
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def mini_detail(request, id):
+    
+    try:
+        mini = MiniData.objects.get(pk=id)
+    except MiniData.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = MiniSerializer(mini)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = MiniSerializer(mini, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        mini.delete() 
+        # risky and update hte confirmation should be done by the front end
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+@api_view(['GET'])
+def read_armada_scrape(request):
+    json_data = []
+    for file_name in os.listdir(data_directory):
+        if file_name.endswith('.json'):
+            with open(os.path.join(data_directory, file_name), 'r') as f:
+                json_data.append(json.load(f))
+    context = {'json_data': json_data}
+    return Response(context, status=status.HTTP_200_OK)
