@@ -18,6 +18,8 @@ class ArmadaSpider(scrapy.Spider):
             # Extracting category name from URL
             category_name = category_url.split("/")[-1]
             category_page_url = f"https://shoparmada.com{category_url}"
+            if 'accessories' in category_name.lower() or 'dice' in category_name.lower():
+                continue
             yield scrapy.Request(category_page_url, callback=self.parse_category_page, meta={'category': category_name})
 
     def parse_category_page(self, response):

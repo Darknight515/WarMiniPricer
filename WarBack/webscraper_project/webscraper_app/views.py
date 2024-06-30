@@ -2,6 +2,7 @@ from decimal import Decimal, InvalidOperation
 from urllib import request
 from django.shortcuts import render
 # from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 from django.http import JsonResponse
 # from .models import MiniData
 from .models import *
