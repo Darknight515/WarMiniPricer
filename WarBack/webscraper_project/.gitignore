@@ -1,10 +1,3 @@
-WarBack/webscraper_project/webscraper_app/migrations/*
-WarBack/webscraper_project/db.sqlite3
-.vscode/settings.json
-WarFront/obj/Debug/*
-WarFront/obj/Debug/netcoreapp3.1/WarFront.AssemblyInfo.cs
-WarBack/warscraper/test.json
-proj_env/**
 # Created by https://www.toptal.com/developers/gitignore/api/django,venv
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,venv
 
