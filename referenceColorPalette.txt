@@ -1,0 +1,11 @@
+If you need a general 40K color palette, this would be a great selection:
+	•	#1E1E1E (Black)
+	•	#8B0000 (Dark Red)
+	•	#003366 (Dark Blue)
+	•	#FFD700 (Gold)
+	•	#C0C0C0 (Steel/Silver)
+	•	#D2B48C (Bone)
+	•	#006400 (Dark Green)
+	•	#800080 (Purple)
+	•	#FFFFFF (White)
+	•	#40E0D0 (Turquoise)
