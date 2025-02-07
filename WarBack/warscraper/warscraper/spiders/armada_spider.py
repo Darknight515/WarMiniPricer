@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from decimal import Decimal
 import scrapy
 
 
@@ -28,10 +28,15 @@ class ArmadaSpider(scrapy.Spider):
         item_elements = response.css('.product-details')
         for item_element in item_elements:
             item_name = item_element.css('.title::text').get().strip()
-            item_price = item_element.css(
-                '.current_price .money::text').get().strip()
+            item_price_str = item_element.css('.current_price .money::text').get().strip()
+            item_price = self.parse_price(item_price_str)
             yield {
                 'category': category,
                 'name': item_name,
                 'price': item_price
             }
+
+    def parse_price(self, price_str):
+        # Remove currency symbols and commas, then convert to Decimal
+        price_str = price_str.replace('$', '').replace(',', '').strip()
+        return Decimal(price_str)

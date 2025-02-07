@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from webscraper_app.views import mini_data_list
+from webscraper_app.views import mini_data_list, read_spider_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('mini-data-list/', mini_data_list, name='mini_data_list'),
+    path('read-spider-data', read_spider_data, name='read_spider_data'),
     # path('scrape/',scrape_view, name='scrape')
 ]
