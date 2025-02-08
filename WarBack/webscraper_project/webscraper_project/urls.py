@@ -16,11 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from webscraper_app.views import mini_data_list, read_spider_data
+from webscraper_app.views import (
+    mini_data_list,
+    read_spider_data,
+    mini_detail,
+    mini_price_history,
+    multiple_mini_price_history,
+    mini_msrp,
+    multiple_msrp,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('mini-data-list/', mini_data_list, name='mini_data_list'),
-    path('read-spider-data', read_spider_data, name='read_spider_data'),
-    # path('scrape/',scrape_view, name='scrape')
+    path('read-spider-data/', read_spider_data, name='read_spider_data'),
+    path('mini/<int:mini_id>/detail/', mini_detail, name='mini_detail'),
+    path('mini/<int:mini_id>/price-history/', mini_price_history, name='mini_price_history'),
+    path('mini/multiple-price-history/', multiple_mini_price_history, name='multiple_mini_price_history'),
+    path('mini/<int:mini_id>/msrp/', mini_msrp, name='mini_msrp'),
+    path('mini/multiple-msrp/', multiple_msrp, name='multiple_msrp'),
 ]

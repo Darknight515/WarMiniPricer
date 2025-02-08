@@ -11,6 +11,7 @@ class MiniData(models.Model):
 class DatePrice(models.Model):
     mini = models.ForeignKey(MiniData, on_delete=models.CASCADE, related_name='date_prices')
     date_price = models.DateField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
         db_table = 'DatePrice'
