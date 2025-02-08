@@ -4,7 +4,7 @@ import django
 import logging
 import scrapy
 from decimal import Decimal
-
+from twisted.internet.threads import deferToThread
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -92,6 +92,9 @@ class ArmadaSpider(scrapy.Spider):
         return price
 
     def save_to_db(self, category, name, price, image_url):
+        deferToThread(self._save_to_db, category, name, price, image_url)
+
+    def _save_to_db(self, category, name, price, image_url):
         try:
             mini, created = MiniData.objects.get_or_create(
                 name=name,
