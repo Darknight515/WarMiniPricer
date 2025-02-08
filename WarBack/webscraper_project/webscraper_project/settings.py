@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'webscraper_app',  #shows where the application is 
     
 ]
@@ -44,12 +45,22 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# This is for testing to allow all CORS origins
+CORS_ALLOW_ALL_ORIGINS = True
+
+# This is for production CORS headers
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+#     "https://your-production-domain.com",
+# ]
 
 ROOT_URLCONF = 'webscraper_project.urls'
 
