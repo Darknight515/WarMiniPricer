@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 import django
@@ -23,7 +24,7 @@ sys.path.append(project_root)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'webscraper_project.settings')
 django.setup()
 
-from webscraper_app.models import MiniData, CurrentPrice
+from webscraper_app.models import MiniData, CurrentPrice, DatePrice, MSRP
 
 class ArmadaSpider(scrapy.Spider):
     name = "armada"
@@ -103,10 +104,35 @@ class ArmadaSpider(scrapy.Spider):
             if not created:
                 mini.image_url = image_url
                 mini.save()
+
+            # Set MSRP only if this is the first record for the mini.
+            if created or not hasattr(mini, 'msrp'):
+                MSRP.objects.update_or_create(
+                    mini=mini,
+                    defaults={'msrp': price}
+                )
+
+            today = datetime.date.today()
+
+            # Get the last recorded price for this mini (if any)
+            last_date_price = DatePrice.objects.filter(mini=mini).order_by('-date_price').first()
+
+            # Insert a new record for today's price if none exists,
+            # or if the price has changed compared to the last recorded price.
+            if not last_date_price or last_date_price.date_price != today:
+                # No price for today yet—create a new record.
+                DatePrice.objects.create(mini=mini, date_price=today, price=price)
+            elif last_date_price.price != price:
+                # Today’s price record exists but the price has changed,
+                # update CurrentPrice and insert a new DatePrice record.
+                DatePrice.objects.create(mini=mini, date_price=today, price=price)
+
+            # Update the current price if it differs from the new price.
             CurrentPrice.objects.update_or_create(
                 mini=mini,
                 defaults={'price': price}
             )
-            logger.debug("Saved to db: %s, price: %s", name, price)
+
+            logger.debug("Saved %s to db: price %s", name, price)
         except Exception as e:
             logger.error("Error saving %s to db: %s", name, e)
