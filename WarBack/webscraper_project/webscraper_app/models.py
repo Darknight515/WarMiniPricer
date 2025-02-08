@@ -3,6 +3,7 @@ from django.db import models
 class MiniData(models.Model):
     name = models.CharField(max_length=100)
     faction = models.CharField(max_length=100)
+    image_url = models.URLField(max_length=200, blank=True, null=True)  # New field for image URL
 
     class Meta:
         db_table = 'MiniData'

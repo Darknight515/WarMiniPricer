@@ -34,7 +34,7 @@ def read_spider_data(request):
             if 'price' in item:
                 CurrentPrice.objects.update_or_create(
                     mini=mini,
-                    defaults={'price': item['price']}
+                    defaults={'price': Decimal(item['price'])}
                 )
 
     return JsonResponse({'status': 'success', 'data': json_data}, safe=False)
