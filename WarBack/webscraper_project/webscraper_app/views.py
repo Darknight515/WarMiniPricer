@@ -9,18 +9,31 @@ import json
 
 
 def mini_data_list(request):
-    mini_data_queryset = MiniData.objects.all()
-    
-    # Manually serialize QuerySet to list of dictionaries
-    mini_data_list = list(mini_data_queryset.values())
-    
-    # Return JsonResponse with the serialized data
+    # Get all minis with their current prices
+    mini_data_list = []
+    for mini in MiniData.objects.all():
+        try:
+            current_price = CurrentPrice.objects.get(mini=mini)
+            price = str(current_price.price)
+        except CurrentPrice.DoesNotExist:
+            price = None
+
+        mini_dict = {
+            'id': mini.id,
+            'name': mini.name,
+            'image_url': mini.image_url,
+            'faction': mini.faction,
+            'price': price
+        }
+        mini_data_list.append(mini_dict)
+
     return JsonResponse({'mini_data_list': mini_data_list}, safe=False)
 
 
 def read_spider_data(request):
     # Construct the relative path to the data directory
-    data_directory = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'warscraper/output')
+    data_directory = os.path.join(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))), 'warscraper/output')
     json_data = []
     for filename in os.listdir(data_directory):
         if filename.endswith('.json'):
@@ -41,6 +54,7 @@ def read_spider_data(request):
                 )
 
     return JsonResponse({'status': 'success', 'data': json_data}, safe=False)
+
 
 def mini_price_history(request, mini_id):
     """
@@ -69,6 +83,7 @@ def mini_price_history(request, mini_id):
     }
     return JsonResponse(data)
 
+
 def multiple_mini_price_history(request):
     """
     Accepts a comma separated list of mini IDs via the 'mini_ids' query parameter.
@@ -82,7 +97,8 @@ def multiple_mini_price_history(request):
     except ValueError:
         return JsonResponse({'error': 'Invalid mini_ids provided'}, status=400)
 
-    dp_qs = DatePrice.objects.filter(mini_id__in=mini_ids).order_by('mini', 'date_price')
+    dp_qs = DatePrice.objects.filter(
+        mini_id__in=mini_ids).order_by('mini', 'date_price')
     page = request.GET.get('page', 1)
     page_size = request.GET.get('page_size', 10)
     paginator = Paginator(dp_qs, page_size)
@@ -90,13 +106,15 @@ def multiple_mini_price_history(request):
         dp_page = paginator.page(page)
     except (PageNotAnInteger, EmptyPage):
         dp_page = paginator.page(1)
-    price_history = list(dp_page.object_list.values('mini', 'date_price', 'price'))
+    price_history = list(dp_page.object_list.values(
+        'mini', 'date_price', 'price'))
     data = {
         'price_history': price_history,
         'total_pages': paginator.num_pages,
         'current_page': dp_page.number,
     }
     return JsonResponse(data)
+
 
 def mini_msrp(request, mini_id):
     """
@@ -111,6 +129,7 @@ def mini_msrp(request, mini_id):
         'msrp': str(msrp_obj.msrp)
     }
     return JsonResponse(data)
+
 
 def multiple_msrp(request):
     """
