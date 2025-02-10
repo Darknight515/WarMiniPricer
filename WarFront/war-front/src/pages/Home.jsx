@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom";
 import { getMiniDataList } from "../services/api"
 import CategoryNav from "../components/CategoryNav";
 import DisplayCard from "../components/DisplayCard";
@@ -79,9 +80,9 @@ function Home() {
         <main className="flex-1 ml-4 p-4 overflow-y-auto">
           <div className="grid grid-cols-4 gap-4">
             {currentMinis.map((mini) => (
-              <a href="#" key={mini.id}>
+              <Link to={`/mini/${mini.id}`} key={mini.id}>
                 <DisplayCard mini={mini} />
-              </a>
+              </Link>
             ))}
           </div>
 

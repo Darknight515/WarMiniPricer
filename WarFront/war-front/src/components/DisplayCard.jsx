@@ -20,9 +20,17 @@ function DisplayCard({ mini }) {
             </div>
             <div className="card-info text-center mt-2">{mini.name}</div>
             <div className="card-pricing">${mini.price}</div>
-            <div className="card-buttons">
-            <button type="button">ding</button>
-            <button type="button">aling</button>
+            <div className="card-buttons flex gap-2 mt-2">
+                <input
+                    type="button"
+                    value="ding"
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                />
+                <input
+                    type="button"
+                    value="ling"
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                />
             </div>
         </div>
     )
