@@ -84,3 +84,14 @@ export const getMiniDataList = async () => {
       throw error;
     }
   };
+
+  // Get minis with recent (60 days) changes
+  export const getRecentPriceChanges = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}recent-price-changes/`);
+      return response.json();
+    } catch (error) {
+      console.error("Error fetching recent price changes:", error)
+      throw error;
+    }
+  }

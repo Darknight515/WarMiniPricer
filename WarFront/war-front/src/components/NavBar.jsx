@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {HomeIcon, InformationCircleIcon, ScaleIcon} from "@heroicons/react/24/outline"
+import {HomeIcon, InformationCircleIcon, ScaleIcon, ClockIcon} from "@heroicons/react/24/outline"
 
 function NavBar() {
     return (
@@ -16,6 +16,9 @@ function NavBar() {
             </Link>
             <Link to="/factions" className="nav-link">
                 <ScaleIcon className="size-10 rounded bg-white"/>
+            </Link>
+            <Link to="/recent-changes" className="nav-link">
+                <ClockIcon className="size-10 rounded bg-white"/>
             </Link>
         </div>
     </nav>

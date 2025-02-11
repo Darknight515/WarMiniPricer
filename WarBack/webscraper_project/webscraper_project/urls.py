@@ -24,6 +24,7 @@ from webscraper_app.views import (
     multiple_mini_price_history,
     mini_msrp,
     multiple_msrp,
+    recent_price_changes
 )
 
 urlpatterns = [
@@ -35,4 +36,5 @@ urlpatterns = [
     path('mini/multiple-price-history/', multiple_mini_price_history, name='multiple_mini_price_history'),
     path('mini/<int:mini_id>/msrp/', mini_msrp, name='mini_msrp'),
     path('mini/multiple-msrp/', multiple_msrp, name='multiple_msrp'),
+    path('recent-price-changes/', recent_price_changes, name="recent_price_changes"),
 ]

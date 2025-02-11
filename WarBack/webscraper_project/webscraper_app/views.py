@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms.models import model_to_dict
@@ -195,3 +197,46 @@ def mini_detail(request, mini_id):
         'price_history': price_history,
     }
     return JsonResponse(data)
+
+def recent_price_changes(request):
+    """
+    Returns only minis that have had a price change in the last 60 days.
+    A price change is defined as having at least two price records within that period
+    where the two most recent prices are different.
+    """
+    cutoff_date = timezone.now().date() - timedelta(days=60)
+    # Get distinct mini IDs with at least one price record in the last 60 days
+    mini_ids = DatePrice.objects.filter(date_price__gte=cutoff_date) \
+                                .values_list('mini_id', flat=True).distinct()
+    mini_list = MiniData.objects.filter(id__in=mini_ids)
+
+    recent_minis = []
+    for mini in mini_list:
+        # Get all price records in the last 60 days ordered by date descending
+        dp_records = list(
+            DatePrice.objects.filter(mini=mini, date_price__gte=cutoff_date)
+            .order_by("-date_price")
+        )
+        # Only consider minis with at least two records
+        if len(dp_records) >= 2:
+            new_price = dp_records[0].price
+            previous_price = dp_records[1].price
+            # Only include if the most recent two prices differ (i.e. a change occurred)
+            if new_price != previous_price:
+                try:
+                    current_price_obj = CurrentPrice.objects.get(mini=mini)
+                    current_price = str(current_price_obj.price)
+                except CurrentPrice.DoesNotExist:
+                    current_price = None
+
+                mini_dict = {
+                    'id': mini.id,
+                    'name': mini.name,
+                    'faction': mini.faction,
+                    'image_url': mini.image_url,
+                    'new_price': str(new_price),
+                    'previous_price': str(previous_price),
+                    'current_price': current_price,
+                }
+                recent_minis.append(mini_dict)
+    return JsonResponse({'recent_minis': recent_minis})
