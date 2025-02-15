@@ -45,8 +45,11 @@ function CategoryNav({ onCategorySelect }) {
   }
 
   return (
-    <nav className="w-64 bg-[var(--color-dark-grey)] p-4 text-[var(--color-off-white)] border-r border-[var(--color-imperial-gold)] max-h-screen">
-      <ul className="space-y-2 overflow-y-scroll max-h-screen scrollbar-thin scrollbar-thumb-[var(--color-imperial-gold)] scrollbar-track-[var(--color-dark-grey)]">
+    <nav className="w-64 bg-[var(--color-dark-grey)] p-4 text-[var(--color-off-white)] border-r border-[var(--color-imperial-gold)] h-full">
+      <ul
+        className="space-y-2 overflow-y-auto h-full pr-2 pb-4 scrollbar-thin scrollbar-thumb-[var(--color-imperial-gold)] scrollbar-track-[var(--color-dark-grey)]"
+        style={{ scrollbarGutter: "stable" }}
+      >
         <li>
           <button
             onClick={() => onCategorySelect(null)}

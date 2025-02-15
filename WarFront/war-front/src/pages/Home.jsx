@@ -72,9 +72,7 @@ function Home() {
       {/* Main content with sidebar and cards */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar */}
-        <aside className="w-64 bg-[var(--color-dark-grey)] p-4 overflow-y-auto sticky top-0">
-          <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} />
-        </aside>
+        <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} />
 
         {/* Main Content */}
         <main className="flex-1 ml-4 p-4 overflow-y-auto">

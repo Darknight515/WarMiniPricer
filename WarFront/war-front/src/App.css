@@ -22,3 +22,57 @@ h1 {
     --color-imperial-gold: #C9A227;
     --color-neon-green: #26a30f;
 }
+
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-dark-grey);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-imperial-gold);
+    border-radius: 4px;
+    border: 2px solid var(--color-dark-grey);
+}
+
+/* Firefox scrollbar styling */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-imperial-gold) var(--color-dark-grey);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+nav ul::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+nav ul:hover::-webkit-scrollbar {
+    opacity: 1;
+}
+
+nav ul::-webkit-scrollbar-track {
+    background: var(--color-dark-grey);
+}
+
+nav ul::-webkit-scrollbar-thumb {
+    background-color: var(--color-imperial-gold);
+    border-radius: 4px;
+    border: 2px solid var(--color-dark-grey);
+}
+
+/* Firefox */
+nav ul {
+    scrollbar-width: none;
+}
+
+nav ul:hover {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-imperial-gold) var(--color-dark-grey);
+}
