@@ -15,35 +15,41 @@ function DisplayCard({ mini }) {
     }
     return (
         <div className="
-        rounded-md
-        bg-slate-400
-        max-w-60
-        max-h-90
-        min-h-90
-        flex
-        flex-col
-        items-center
-        justify-center
-        p-4
-        overflow-hidden">
+      rounded-md
+      bg-[var(--color-dark-grey)]
+      border border-[var(--color-imperial-gold)]
+      max-w-60
+      max-h-90
+      min-h-90
+      flex
+      flex-col
+      items-center
+      justify-center
+      p-4
+      overflow-hidden
+      text-[var(--color-off-white)]
+      hover:bg-[var(--color-dark-grey)] 
+      transition-colors">
             <div className="card-image flex justify-center max-w-60 max-h-60 overflow-hidden">
-                <img src={mini.image_url} alt="mini image" />
+                <img src={mini.image_url} alt="mini image" className="rounded-md" />
             </div>
             <div className="card-info max-h-auto max-w-full overflow-hidden">
-            <div className="text-center mt-2 truncate">{mini.name}</div>
-            <div className="card-pricing overflow-hidden truncate">Price: ${displayPrice}</div>
-            <div className="card-buttons flex gap-2 mt-2">
-                <input
-                    type="button"
-                    value="ding"
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                />
-                <input
-                    type="button"
-                    value="ling"
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                />
-            </div>
+                <div className="text-center mt-2 truncate font-medium">{mini.name}</div>
+                <div className="card-pricing overflow-hidden truncate text-[var(--color-imperial-gold)]">
+                    Price: {displayPrice}
+                </div>
+                <div className="card-buttons flex gap-2 mt-2">
+                    <input
+                        type="button"
+                        value="ding"
+                        className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded transition-colors duration-200"
+                    />
+                    <input
+                        type="button"
+                        value="ling"
+                        className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded transition-colors duration-200"
+                    />
+                </div>
             </div>
         </div>
     )

@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+h1 {
+    /* color: #2B2B2B, */
+    /* color: #EAEAEA, */
+    /* color: #C9A227, */
+    /* color: #39FF14, */
+}
+
+:root {
+
+    /* Test Colors */
+    /* --color-night: #0B090A;
+    --color-silver: #BBB8AB;
+    --color-licorice: #251710;
+    --color-raisin-black: #1D1B1D;
+    --color-dim-gray: #72695D; */
+
+    /* Minimalist Clean 40k Color Palette */
+    --color-dark-grey: #2B2B2B;
+    --color-off-white: #EAEAEA;
+    --color-imperial-gold: #C9A227;
+    --color-neon-green: #26a30f;
+}

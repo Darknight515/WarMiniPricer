@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {ScaleIcon} from "@heroicons/react/24/outline"
+import React, { useState, useEffect } from "react";
+import { ScaleIcon } from "@heroicons/react/24/outline"
 import { getMiniDataList } from "../services/api";
 
 function normalizeCategory(category) {
@@ -12,7 +12,7 @@ function normalizeCategory(category) {
   return filtered.join(" ").toUpperCase();
 }
 
-function CategoryNav({onCategorySelect}) {
+function CategoryNav({ onCategorySelect }) {
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,22 +37,22 @@ function CategoryNav({onCategorySelect}) {
   }, []);
 
   if (loading) {
-    return <div>Loading categories...</div>;
+    return <div className="text-bone">Loading categories...</div>;
   }
 
   if (error) {
-    return <div>Error loading categories.</div>;
+    return <div className="text-bone">Error loading categories.</div>;
   }
 
-    return(
-    <nav className="w-64 bg-gray-100 p-4">
-      <ul className="space-y-2 overflow-y-scroll max-h-screen">
+  return (
+    <nav className="w-64 bg-[var(--color-dark-grey)] p-4 text-[var(--color-off-white)] border-r border-[var(--color-imperial-gold)] max-h-screen">
+      <ul className="space-y-2 overflow-y-scroll max-h-screen scrollbar-thin scrollbar-thumb-[var(--color-imperial-gold)] scrollbar-track-[var(--color-dark-grey)]">
         <li>
           <button
             onClick={() => onCategorySelect(null)}
-            className="flex items-center p-2 rounded hover:bg-gray-200 w-full text-left"
+            className="flex items-center p-2 rounded bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] w-full text-left transition-colors duration-200 ease-in-out"
           >
-            <ScaleIcon className="w-5 h-5 mr-2" />
+            <ScaleIcon className="w-5 h-5 mr-2 text-[var(--color-off-white)]" />
             <span>All</span>
           </button>
         </li>
@@ -60,16 +60,16 @@ function CategoryNav({onCategorySelect}) {
           <li key={index}>
             <button
               onClick={() => onCategorySelect(category)}
-              className="flex items-center p-2 rounded hover:bg-gray-200 w-full text-left"
+              className="flex items-center p-2 rounded bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] w-full text-left transition-colors duration-200 ease-in-out"
             >
-              <ScaleIcon className="w-5 h-5 mr-2" />
+              <ScaleIcon className="w-5 h-5 mr-2 text-[var(--color-off-white)]" />
               <span>{normalizeCategory(category)}</span>
             </button>
           </li>
         ))}
       </ul>
     </nav>
-    )
+  )
 }
 
 export default CategoryNav;

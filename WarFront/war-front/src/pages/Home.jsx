@@ -29,16 +29,16 @@ function Home() {
     fetchMinis();
   }, []);
 
-  if(loading){
-    return(
+  if (loading) {
+    return (
       <div className="h-screen flex items-center justify-center">
         <h1>Loading Minis...</h1>
       </div>
     );
   }
 
-  if(error){
-    return(
+  if (error) {
+    return (
       <div className="h-screen flex items-center justify-center">
         <h1>Error loading minis</h1>
       </div>
@@ -57,7 +57,7 @@ function Home() {
   const totalPages = Math.ceil(filteredMinis.length / pageSize);
 
   const handlePageChange = (newPage) => {
-    if(newPage >= 1 && newPage <= totalPages) {
+    if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
@@ -65,19 +65,17 @@ function Home() {
   return (
     <div className="h-screen flex flex-col">
       {/* Home header */}
-      <div className="p-4">
+      <div className="p-4 flex items-center justify-center">
         <h1 className="text-2xl font-bold">Mini Data List</h1>
       </div>
 
       {/* Main content with sidebar and cards */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar */}
-        <aside className="w-64 bg-gray-100 p-4 overflow-y-auto sticky top-0">
-          <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} />
-        </aside>
+        <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} />
 
         {/* Main Content */}
-        <main className="flex-1 ml-4 p-4 overflow-y-auto">
+        <main className="flex-1 ml-4 p-4 overflow-y-auto max-h-screen">
           <div className="grid grid-cols-4 gap-4">
             {currentMinis.map((mini) => (
               <Link to={`/mini/${mini.id}`} key={mini.id}>
@@ -88,7 +86,7 @@ function Home() {
 
           {/* Pagination Controls */}
           <div className="flex justify-center items-center mt-4 space-x-4">
-            <button 
+            <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
@@ -98,7 +96,7 @@ function Home() {
             <span>
               Page {currentPage} of {totalPages}
             </span>
-            <button 
+            <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
               className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
