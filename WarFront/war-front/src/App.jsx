@@ -12,22 +12,20 @@ import { MiniProvider } from './contexts/MiniContext';
 function App() {
 
   return (
-    <>
-      <div className="bg-[var(--color-dark-grey)] min-h-screen">
-        <MiniProvider>
-          <NavBar />
-          <main className="main-content min-h-screen p-4">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/factions" element={<Factions />} />
-              <Route path="/mini/:miniId" element={<MiniDetail />} />
-              <Route path="/recent-changes" element={<RecentChanges />} />
-            </Routes>
-          </main>
-        </MiniProvider>
-      </div>
-    </>
+    <div className="bg-[var(--color-dark-grey)] h-screen overflow-hidden flex flex-col">
+      <MiniProvider>
+        <NavBar />
+        <main className="flex-1 overflow-hidden">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/factions" element={<Factions />} />
+            <Route path="/mini/:miniId" element={<MiniDetail />} />
+            <Route path="/recent-changes" element={<RecentChanges />} />
+          </Routes>
+        </main>
+      </MiniProvider>
+    </div>
   )
 }
 

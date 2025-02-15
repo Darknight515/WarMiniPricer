@@ -63,19 +63,21 @@ function Home() {
   };
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-full flex flex-col">
       {/* Home header */}
-      <div className="p-4 flex items-center justify-center">
-        <h1 className="text-2xl font-bold">Mini Data List</h1>
-      </div>
+      <header className="p-4 flex items-center justify-center">
+        <h1 className="text-2xl font-bold text-[var(--color-off-white)]">Mini Data List</h1>
+      </header>
 
       {/* Main content with sidebar and cards */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar */}
-        <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} />
+        <aside className="w-64 bg-[var(--color-dark-grey)] p-4 overflow-y-auto sticky top-0">
+          <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} />
+        </aside>
 
         {/* Main Content */}
-        <main className="flex-1 ml-4 p-4 overflow-y-auto max-h-screen">
+        <main className="flex-1 ml-4 p-4 overflow-y-auto">
           <div className="grid grid-cols-4 gap-4">
             {currentMinis.map((mini) => (
               <Link to={`/mini/${mini.id}`} key={mini.id}>
@@ -89,17 +91,17 @@ function Home() {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+              className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded disabled:opacity-50 transition-colors duration-200"
             >
               Prev
             </button>
-            <span>
+            <span className="text-[var(--color-off-white)]">
               Page {currentPage} of {totalPages}
             </span>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+              className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded disabled:opacity-50 transition-colors duration-200"
             >
               Next
             </button>
