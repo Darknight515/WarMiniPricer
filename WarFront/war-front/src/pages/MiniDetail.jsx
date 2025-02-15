@@ -1,58 +1,59 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useMiniContext } from "../contexts/MiniContext";
 import { useParams } from "react-router-dom";
 import { getMiniDetail } from "../services/api";
-import {Line} from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import {
-    Chart,
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
+  Chart,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
 } from "chart.js"
 
 //Registering Chart.js components
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-function MiniDetail(){
-    const { miniId } = useParams();
-    const [miniDetail, setMiniDetail] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+function MiniDetail() {
+  const { miniId } = useParams();
+  const [miniDetail, setMiniDetail] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        async function fetchMiniDetail() {
-            try {
-                const data = await getMiniDetail(miniId);
-                setMiniDetail(data);
-            } catch (err) {
-                console.error("Error fetching mini detail:", err);
-                setError(err)
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchMiniDetail();
-    },[miniId])
+  useEffect(() => {
+    async function fetchMiniDetail() {
+      try {
+        const data = await getMiniDetail(miniId);
+        setMiniDetail(data);
+      } catch (err) {
+        console.error("Error fetching mini detail:", err);
+        setError(err)
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMiniDetail();
+  }, [miniId])
 
-  if(loading){
-    return(
-      <div className="h-screen flex items-center justify-center">
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-[var(--color-dark-grey)] text-[var(--color-off-white)]">
         <h1>Loading Mini data...</h1>
       </div>
     );
   }
 
-  if(error){
-    return(
-      <div className="h-screen flex items-center justify-center">
+  if (error) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-[var(--color-dark-grey)] text-[var(--color-off-white)]">
         <h1>Error loading minis</h1>
       </div>
     );
   }
 
   const { mini, current_price, msrp, price_history } = miniDetail;
-  // Prepare chart data using 'date_price' from each history record.
+
+  // Prepare chart data using your theme colors
   const chartData = {
     labels: price_history.map((entry) => entry.date_price),
     datasets: [
@@ -60,11 +61,12 @@ function MiniDetail(){
         label: "Price",
         data: price_history.map((entry) => entry.price),
         fill: false,
-        backgroundColor: "rgb(75, 192, 192)",
-        borderColor: "rgba(75, 192, 192, 0.2)",
+        backgroundColor: "#C9A227", // Imperial Gold
+        borderColor: "rgba(201, 162, 39, 0.7)", // Imperial Gold with opacity
       },
     ],
   };
+
 
   const chartOptions = {
     responsive: true,
@@ -74,24 +76,40 @@ function MiniDetail(){
         title: {
           display: true,
           text: "Date",
+          color: "var(--color-off-white)",
+        },
+        ticks: {
+          color: "var(--color-off-white)",
         },
       },
       y: {
         title: {
           display: true,
           text: "Price",
+          color: "var(--color-off-white)",
+        },
+        ticks: {
+          color: "var(--color-off-white)",
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: "var(--color-off-white)",
         },
       },
     },
   };
 
+
   return (
-    <div className="p-4">
+    <div className="p-4 bg-[var(--color-dark-grey)] text-[var(--color-off-white)] min-h-screen">
       <h1 className="text-2xl font-bold">{mini.name}</h1>
       <img
         src={mini.image_url}
         alt={mini.name}
-        className="max-w-md mx-auto my-4"
+        className="max-w-md mx-auto my-4 rounded"
       />
       <p className="mt-4">Current Price: ${current_price}</p>
       <p className="mt-2">MSRP: ${msrp}</p>
