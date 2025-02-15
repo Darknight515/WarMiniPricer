@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {Routes, Route, Link} from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import './App.css'
 import NavBar from "./components/NavBar"
 import Home from './pages/Home';
@@ -13,18 +13,20 @@ function App() {
 
   return (
     <>
-    <MiniProvider>
-      <NavBar />
-      <main className='main-content min-h-screen'>
-      <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/about' element={<About/>}/>
-        <Route path='/factions' element={<Factions />}/>
-        <Route path="/mini/:miniId" element={<MiniDetail />} />
-        <Route path="/recent-changes" element={<RecentChanges />} />
-      </Routes>
-      </main>
-    </MiniProvider>
+      <div className="bg-[var(--color-dark-grey)] min-h-screen">
+        <MiniProvider>
+          <NavBar />
+          <main className="main-content min-h-screen p-4">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/factions" element={<Factions />} />
+              <Route path="/mini/:miniId" element={<MiniDetail />} />
+              <Route path="/recent-changes" element={<RecentChanges />} />
+            </Routes>
+          </main>
+        </MiniProvider>
+      </div>
     </>
   )
 }
