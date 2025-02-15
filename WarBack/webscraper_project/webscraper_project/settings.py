@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'webscraper_app',  #shows where the application is 
-    
+    'webscraper_app',  # shows where the application is
+
 ]
 
 MIDDLEWARE = [
@@ -94,8 +94,9 @@ DATABASES = {
         "PASSWORD": "grimm-94",
         "HOST": "localhost",
         "PORT": "1433",
-        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
-        },
+        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server",
+                    # "OPTIONS": {"driver": "ODBC Driver 18 for SQL Server",
+                    },
     },
 }
 
