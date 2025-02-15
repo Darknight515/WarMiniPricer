@@ -31,7 +31,7 @@ function Home() {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-full flex items-center justify-center text-[var(--color-off-white)]">
         <h1>Loading Minis...</h1>
       </div>
     );
@@ -39,7 +39,7 @@ function Home() {
 
   if (error) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-full flex items-center justify-center text-[var(--color-off-white)]">
         <h1>Error loading minis</h1>
       </div>
     );
@@ -76,7 +76,7 @@ function Home() {
 
         {/* Main Content */}
         <main className="flex-1 ml-4 p-4 overflow-y-auto">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-6 gap-4">
             {currentMinis.map((mini) => (
               <Link to={`/mini/${mini.id}`} key={mini.id}>
                 <DisplayCard mini={mini} />

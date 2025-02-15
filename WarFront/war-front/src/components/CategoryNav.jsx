@@ -37,11 +37,11 @@ function CategoryNav({ onCategorySelect }) {
   }, []);
 
   if (loading) {
-    return <div className="text-bone">Loading categories...</div>;
+    return <div className="text-[var(--color-off-white)]">Loading categories...</div>;
   }
 
   if (error) {
-    return <div className="text-bone">Error loading categories.</div>;
+    return <div className="text-[var(--color-off-white)]">Error loading categories.</div>;
   }
 
   return (
