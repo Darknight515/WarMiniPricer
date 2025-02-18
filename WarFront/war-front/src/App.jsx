@@ -12,7 +12,7 @@ import { MiniProvider } from './contexts/MiniContext';
 function App() {
 
   return (
-    <div className="bg-[var(--color-dark-grey)] h-screen overflow-hidden flex flex-col">
+    <div className="bg-[var(--color-off-white)] h-screen overflow-hidden flex flex-col">
       <MiniProvider>
         <NavBar />
         <main className="flex-1 overflow-hidden">

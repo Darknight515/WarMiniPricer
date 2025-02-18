@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMiniContext } from "../contexts/MiniContext";
+import { ShoppingCartIcon, PencilSquareIcon } from "@heroicons/react/16/solid"
 
 function DisplayCard({ mini }) {
     const { isInCart, addMiniToCart, removeMiniToCart } = useMiniContext;
@@ -39,16 +40,16 @@ function DisplayCard({ mini }) {
                     Price: {displayPrice}
                 </div>
                 <div className="card-buttons flex gap-2 mt-2">
-                    <input
+                    <button
                         type="button"
-                        value="ding"
-                        className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded transition-colors duration-200"
-                    />
-                    <input
+                        className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded transition-colors duration-200">
+                        <ShoppingCartIcon className="w-8 h-8 rounded bg-[var(--color-imperial-gold)] p-2 hover:bg-[var(--color-neon-green)] transition-colors" />
+                    </button>
+                    <button
                         type="button"
-                        value="ling"
-                        className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded transition-colors duration-200"
-                    />
+                        className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded transition-colors duration-200">
+                        <PencilSquareIcon className="w-8 h-8 rounded bg-[var(--color-imperial-gold)] p-2 hover:bg-[var(--color-neon-green)] transition-colors" />
+                    </button>
                 </div>
             </div>
         </div>

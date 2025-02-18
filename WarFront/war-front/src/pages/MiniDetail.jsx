@@ -104,18 +104,26 @@ function MiniDetail() {
 
 
   return (
-    <div className="p-4 bg-[var(--color-dark-grey)] text-[var(--color-off-white)] min-h-screen">
-      <h1 className="text-2xl font-bold">{mini.name}</h1>
-      <img
-        src={mini.image_url}
-        alt={mini.name}
-        className="max-w-md mx-auto my-4 rounded"
-      />
-      <p className="mt-4">Current Price: ${current_price}</p>
-      <p className="mt-2">MSRP: ${msrp}</p>
-      <div className="mt-8" style={{ height: "300px" }}>
-        <h2 className="text-xl font-semibold mb-2">Price History Graph</h2>
-        <Line data={chartData} options={chartOptions} />
+    <div className="p-4 bg-[var(--color-dark-grey)] text-[var(--color-off-white)] min-h-screen overflow-y-auto overflow-x-hidden">
+      <div className="flex flex-col md:flex-row">
+        {/* Left Column: Mini Image and Details */}
+        <div className="md:w-1/2 flex flex-col items-center">
+          <h1 className="text-2xl font-bold">{mini.name}</h1>
+          <img
+            src={mini.image_url}
+            alt={mini.name}
+            className="max-w-md mx-auto my-4 rounded"
+          />
+          <p className="mt-4">Current Price: ${current_price}</p>
+          <p className="mt-2">MSRP: ${msrp}</p>
+        </div>
+        {/* Right Column: Price History Graph */}
+        <div className="md:w-1/2 flex flex-col mt-8 md:mt-0 md:ml-4 mr-8">
+          <h2 className="text-xl font-semibold mb-2">Price History Graph</h2>
+          <div className="w-full" style={{ height: "300px", backgroundColor: "var(--color-off-white)" }}>
+            <Line data={chartData} options={chartOptions} />
+          </div>
+        </div>
       </div>
     </div>
   )

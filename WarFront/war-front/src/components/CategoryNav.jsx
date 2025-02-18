@@ -37,15 +37,16 @@ function CategoryNav({ onCategorySelect }) {
   }, []);
 
   if (loading) {
-    return <div className="text-[var(--color-off-white)]">Loading categories...</div>;
+    return <div className="text-[var(--color-neon-green)]">Loading categories...</div>;
   }
 
   if (error) {
-    return <div className="text-[var(--color-off-white)]">Error loading categories.</div>;
+    return <div className="text-[var(--color-neon-green)]">Error loading categories.</div>;
   }
 
   return (
     <nav className="w-64 bg-[var(--color-dark-grey)] p-4 text-[var(--color-off-white)] border-r border-[var(--color-imperial-gold)] h-full">
+      <h3>Factions</h3>
       <ul
         className="space-y-2 overflow-y-auto h-full pr-2 pb-4 scrollbar-thin scrollbar-thumb-[var(--color-imperial-gold)] scrollbar-track-[var(--color-dark-grey)]"
         style={{ scrollbarGutter: "stable" }}

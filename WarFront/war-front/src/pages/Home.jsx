@@ -66,7 +66,7 @@ function Home() {
     <div className="h-full flex flex-col">
       {/* Home header */}
       <header className="p-4 flex items-center justify-center">
-        <h1 className="text-2xl font-bold text-[var(--color-off-white)]">Mini Data List</h1>
+        <h1 className="text-2xl font-bold text-[var(--color-neon-green)]">Mini Data List</h1>
       </header>
 
       {/* Main content with sidebar and cards */}
@@ -93,7 +93,7 @@ function Home() {
             >
               Prev
             </button>
-            <span className="text-[var(--color-off-white)]">
+            <span className="text-[var(--color-imperial-gold)]">
               Page {currentPage} of {totalPages}
             </span>
             <button
