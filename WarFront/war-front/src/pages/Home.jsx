@@ -31,7 +31,7 @@ function Home() {
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center text-[var(--color-off-white)]">
+      <div className="h-full flex items-center justify-center text-[var(--color-neon-green)]">
         <h1>Loading Minis...</h1>
       </div>
     );
@@ -65,18 +65,18 @@ function Home() {
   return (
     <div className="h-full flex flex-col">
       {/* Home header */}
-      <header className="p-4 flex items-center justify-center">
-        <h1 className="text-2xl font-bold text-[var(--color-neon-green)]">Mini Data List</h1>
+      <header className="p-8 flex border-b-2 mb-2 ml-2">
+        <h1 className="text-2xl font-stretch-semi-condensed font-bold text-[var(--color-neon-green)]">40K Accessories & Minis</h1>
       </header>
 
       {/* Main content with sidebar and cards */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar */}
-        <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} />
+        <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} selectedCategory={filterCategory} />
 
         {/* Main Content */}
         <main className="flex-1 ml-4 p-4 overflow-y-auto">
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             {currentMinis.map((mini) => (
               <Link to={`/mini/${mini.id}`} key={mini.id}>
                 <DisplayCard mini={mini} />

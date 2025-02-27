@@ -19,10 +19,10 @@ function NavBar() {
                     <InformationCircleIcon className="w-10 h-10 rounded bg-[var(--color-imperial-gold)] p-2 hover:bg-[var(--color-neon-green)] transition-colors" />
                 </Link>
                 <Link to="/factions" className="nav-link">
-                    <ScaleIcon className="w-10 h-10 rounded bg-[var(--color-imperial-gold)] p-2 hover:bg-[var(--color-neon-green)] transition-colors" />
+                    <ScaleIcon className="w-10 h-10 rounded p-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] transition-colors" />
                 </Link>
                 <Link to="/recent-changes" className="nav-link">
-                    <ClockIcon className="w-10 h-10 rounded bg-[var(--color-imperial-gold)] p-2 hover:bg-[var(--color-neon-green)] transition-colors" />
+                    <ClockIcon className="w-10 h-10 rounded p-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] transition-colors" />
                 </Link>
             </div>
         </nav>
