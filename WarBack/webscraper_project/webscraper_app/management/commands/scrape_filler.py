@@ -2,70 +2,88 @@ import random
 from datetime import date, timedelta
 from decimal import Decimal, ROUND_HALF_UP
 from django.core.management.base import BaseCommand
-from webscraper_app.models import MiniData, DatePrice, CurrentPrice
+from django.db import transaction
+from webscraper_app.models import MiniData, DatePrice, CurrentPrice, MSRP
+import logging
 
+logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
-    help = 'Fills missing price entries with random price drops from the last date to April 9th 2025'
+    help = 'Fill missing prices with random drops (5-30%) from MSRP'
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--dry_run',
+            action='store_true',
+            help='Simulate without saving to DB',
+        )
 
     def handle(self, *args, **options):
-        end_date = date(2025, 4, 9)
-        minis = MiniData.objects.all()
+        try:
+            with transaction.atomic():
+                end_date = date(2025, 4, 9)
+                minis = MiniData.objects.select_related('msrp').all()
 
-        for mini in minis:
-            last_date_price = DatePrice.objects.filter(
-                mini=mini).order_by('-date_price').first()
-            if not last_date_price:
-                self.stdout.write(
-                    f"Skipping mini {mini.name} (no DatePrice entries)")
-                continue
+                for mini in minis:
+                    if not hasattr(mini, 'msrp'):
+                        logger.warning(f"⚠️ No MSRP for {mini.name}. Skipping.")
+                        continue
 
-            last_date = last_date_price.date_price
-            start_date = last_date + timedelta(days=1)
-            if start_date > end_date:
-                continue  # No dates to fill
+                    msrp = mini.msrp.msrp
+                    last_entry = DatePrice.objects.filter(mini=mini).order_by('-date_price').first()
 
-            # Fetch existing DatePrice entries in the range
-            existing_dates = DatePrice.objects.filter(
-                mini=mini,
-                date_price__gte=start_date,
-                date_price__lte=end_date
-            ).values_list('date_price', 'price')
-            existing_price_dict = {dt: price for dt, price in existing_dates}
+                    # Start from day after last entry (or 2020-01-01 if no history)
+                    start_date = (
+                        last_entry.date_price + timedelta(days=1) 
+                        if last_entry 
+                        else date(2020, 1, 1)
+                    )
 
-            current_price = last_date_price.price
-            new_date_prices = []
-            dates_to_process = list(self.daterange(start_date, end_date))
+                    if start_date > end_date:
+                        continue
 
-            for single_date in dates_to_process:
-                if single_date in existing_price_dict:
-                    current_price = existing_price_dict[single_date]
+                    new_entries = []
+                    for single_date in self._daterange(start_date, end_date):
+                        if DatePrice.objects.filter(mini=mini, date_price=single_date).exists():
+                            continue
+
+                        # Random drop (5-30%) from MSRP
+                        drop_percent = random.uniform(5, 30)
+                        new_price = msrp * (1 - Decimal(drop_percent) / 100)
+                        new_price = new_price.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
+
+                        # Never go below 50% of MSRP
+                        if new_price < msrp * Decimal('0.5'):
+                            new_price = msrp * Decimal('0.5')
+                            logger.warning(f"⚠️ Clamped {mini.name} to ${new_price} (50% MSRP)")
+
+                        new_entries.append(DatePrice(
+                            mini=mini,
+                            date_price=single_date,
+                            price=new_price
+                        ))
+
+                    if options['dry_run']:
+                        self.stdout.write(f"DRY RUN: Would add {len(new_entries)} entries for {mini.name}")
+                    else:
+                        if new_entries:
+                            DatePrice.objects.bulk_create(new_entries)
+                            logger.info(f"➕ Added {len(new_entries)} prices for {mini.name}")
+                            # Update CurrentPrice to the newest entry
+                            CurrentPrice.objects.update_or_create(
+                                mini=mini,
+                                defaults={'price': new_entries[-1].price}
+                            )
+
+                if options['dry_run']:
+                    self.stdout.write("✅ Dry run complete. No changes saved.")
                 else:
-                    # Generate random drop between 5% and 30%
-                    drop_percent = random.uniform(5, 30)
-                    drop_decimal = Decimal(str(drop_percent)) / Decimal(100)
-                    new_price = current_price * (Decimal('1') - drop_decimal)
-                    new_price = new_price.quantize(
-                        Decimal('0.00'), rounding=ROUND_HALF_UP)
-                    new_date_prices.append(DatePrice(
-                        mini=mini,
-                        date_price=single_date,
-                        price=new_price
-                    ))
-                    current_price = new_price
+                    self.stdout.write("✅ Prices filled successfully!")
 
-            # Bulk create new DatePrice entries
-            if new_date_prices:
-                DatePrice.objects.bulk_create(new_date_prices)
-                self.stdout.write(
-                    f"Added {len(new_date_prices)} entries for {mini.name}")
+        except Exception as e:
+            logger.critical(f"🚨 Failed: {str(e)}", exc_info=True)
+            self.stdout.write("❌ Fill aborted. All changes rolled back.")
 
-            # Update CurrentPrice
-            CurrentPrice.objects.update_or_create(
-                mini=mini,
-                defaults={'price': current_price}
-            )
-
-    def daterange(self, start_date, end_date):
+    def _daterange(self, start_date, end_date):
         for n in range(int((end_date - start_date).days) + 1):
             yield start_date + timedelta(n)
