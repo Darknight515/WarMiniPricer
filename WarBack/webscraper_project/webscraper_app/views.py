@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.utils import timezone
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.cache import cache
 from django.forms.models import model_to_dict
 from decimal import Decimal
 from .models import MiniData, CurrentPrice, DatePrice, MSRP
@@ -13,7 +14,8 @@ import json
 def mini_data_list(request):
     # Get all minis with their current prices
     mini_data_list = []
-    for mini in MiniData.objects.all():
+    minis = MiniData.objects.select_related('current_prices').all()
+    for mini in minis:
         try:
             current_price = CurrentPrice.objects.get(mini=mini)
             price = str(current_price.price)
@@ -198,12 +200,15 @@ def mini_detail(request, mini_id):
     }
     return JsonResponse(data)
 
+
 def recent_price_changes(request):
     """
     Returns only minis that have had a price change in the last 60 days.
     A price change is defined as having at least two price records within that period
     where the two most recent prices are different.
     """
+    cache_key = 'recent_price_changes'
+    cached_data = cache.get(cache_key)
     cutoff_date = timezone.now().date() - timedelta(days=60)
     # Get distinct mini IDs with at least one price record in the last 60 days
     mini_ids = DatePrice.objects.filter(date_price__gte=cutoff_date) \
