@@ -3,6 +3,7 @@ import { useMiniContext } from "../contexts/MiniContext";
 import { useParams } from "react-router-dom";
 import { getMiniDetail } from "../services/api";
 import { Line } from "react-chartjs-2";
+import { normalizeFaction } from "../utils/helper";
 import {
   Chart,
   LineElement,
@@ -52,6 +53,7 @@ function MiniDetail() {
   }
 
   const { mini, current_price, msrp, price_history } = miniDetail;
+  const percentage = (((miniDetail.msrp - miniDetail.current_price) / miniDetail.msrp) * 100).toFixed(2);
 
   // Prepare chart data using your theme colors
   const chartData = {
@@ -104,7 +106,7 @@ function MiniDetail() {
 
 
   return (
-    <div className="p-4 bg-[var(--color-dark-grey)] text-[var(--color-off-white)] min-h-screen overflow-y-auto overflow-x-hidden">
+    <div className="p-4  text-[var(--color-off-white)] min-h-screen overflow-y-auto overflow-x-hidden">
       <div className="flex flex-col md:flex-row">
         {/* Left Column: Mini Image and Details */}
         <div className="md:w-1/2 flex flex-col items-center">
@@ -123,6 +125,25 @@ function MiniDetail() {
           <div className="w-full" style={{ height: "300px", backgroundColor: "var(--color-off-white)" }}>
             <Line data={chartData} options={chartOptions} />
           </div>
+        </div>
+      </div>
+      <hr />
+      {/* Row After image & charts */}
+      <div>
+        {/* Mini Details */}
+        <div className="text-black">
+          <ul>
+          <li>Name: {mini.name}</li>
+          <li>Faction: {normalizeFaction(mini.faction)}</li>
+          <li>MSRP Price: ${msrp}</li>
+          <li>Current Price: ${current_price}</li>
+          <li>Discount: {percentage}% (${(msrp - current_price).toFixed(2)})</li>
+          </ul>
+        </div>
+        {/* Description */}
+        <hr />
+        <div>
+          <p className="text-black">{JSON.stringify(mini)}</p>
         </div>
       </div>
     </div>
