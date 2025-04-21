@@ -143,7 +143,6 @@ function MiniDetail() {
         {/* Description */}
         <hr />
         <div>
-          <p className="text-black">{JSON.stringify(mini)}</p>
         </div>
       </div>
     </div>
