@@ -8,6 +8,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = 'Fill missing prices with random drops (5-30%) from MSRP'
 
@@ -21,21 +22,23 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             with transaction.atomic():
-                end_date = date(2025, 4, 9)
+                end_date = date(2025, 4, 18)
                 minis = MiniData.objects.select_related('msrp').all()
 
                 for mini in minis:
                     if not hasattr(mini, 'msrp'):
-                        logger.warning(f"⚠️ No MSRP for {mini.name}. Skipping.")
+                        logger.warning(
+                            f"⚠️ No MSRP for {mini.name}. Skipping.")
                         continue
 
                     msrp = mini.msrp.msrp
-                    last_entry = DatePrice.objects.filter(mini=mini).order_by('-date_price').first()
+                    last_entry = DatePrice.objects.filter(
+                        mini=mini).order_by('-date_price').first()
 
                     # Start from day after last entry (or 2020-01-01 if no history)
                     start_date = (
-                        last_entry.date_price + timedelta(days=1) 
-                        if last_entry 
+                        last_entry.date_price + timedelta(days=1)
+                        if last_entry
                         else date(2020, 1, 1)
                     )
 
@@ -50,12 +53,14 @@ class Command(BaseCommand):
                         # Random drop (5-30%) from MSRP
                         drop_percent = random.uniform(5, 30)
                         new_price = msrp * (1 - Decimal(drop_percent) / 100)
-                        new_price = new_price.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
+                        new_price = new_price.quantize(
+                            Decimal('0.00'), rounding=ROUND_HALF_UP)
 
                         # Never go below 50% of MSRP
                         if new_price < msrp * Decimal('0.5'):
                             new_price = msrp * Decimal('0.5')
-                            logger.warning(f"⚠️ Clamped {mini.name} to ${new_price} (50% MSRP)")
+                            logger.warning(
+                                f"⚠️ Clamped {mini.name} to ${new_price} (50% MSRP)")
 
                         new_entries.append(DatePrice(
                             mini=mini,
@@ -64,11 +69,13 @@ class Command(BaseCommand):
                         ))
 
                     if options['dry_run']:
-                        self.stdout.write(f"DRY RUN: Would add {len(new_entries)} entries for {mini.name}")
+                        self.stdout.write(
+                            f"DRY RUN: Would add {len(new_entries)} entries for {mini.name}")
                     else:
                         if new_entries:
                             DatePrice.objects.bulk_create(new_entries)
-                            logger.info(f"➕ Added {len(new_entries)} prices for {mini.name}")
+                            logger.info(
+                                f"➕ Added {len(new_entries)} prices for {mini.name}")
                             # Update CurrentPrice to the newest entry
                             CurrentPrice.objects.update_or_create(
                                 mini=mini,
