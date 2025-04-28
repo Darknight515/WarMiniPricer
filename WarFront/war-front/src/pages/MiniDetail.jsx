@@ -131,14 +131,33 @@ function MiniDetail() {
       {/* Row After image & charts */}
       <div>
         {/* Mini Details */}
-        <div className="text-black">
-          <ul>
-          <li>Name: {mini.name}</li>
-          <li>Faction: {normalizeFaction(mini.faction)}</li>
-          <li>MSRP Price: ${msrp}</li>
-          <li>Current Price: ${current_price}</li>
-          <li>Discount: {percentage}% (${(msrp - current_price).toFixed(2)})</li>
-          </ul>
+        <div className="px-4 sm:px-0">
+          <h3 className="text-base/7 font-semibold text-gray-900">Mini Details:</h3>
+        </div>
+
+        <div className="border-t border-gray-100">
+          <dl className="divide-y divide-gray-200">
+            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
+              <dt className="text-gray-500">Name</dt>
+              <dd className="text-gray-900">{mini.name}</dd>
+            </div>
+            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
+              <dt className="text-gray-500">Faction</dt>
+              <dd className="text-gray-900">{normalizeFaction(mini.faction)}</dd>
+            </div>
+            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
+              <dt className="text-gray-500">MSRP Price</dt>
+              <dd className="text-gray-900">${msrp}</dd>
+            </div>
+            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
+              <dt className="text-gray-500">Current Price</dt>
+              <dd className="text-gray-900">${current_price}</dd>
+            </div>
+            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
+              <dt className="text-gray-500">Discount:</dt>
+              <dd className="text-gray-900">{percentage}% (${(msrp - current_price).toFixed(2)})</dd>
+            </div>
+          </dl>
         </div>
         {/* Description */}
         <hr />
