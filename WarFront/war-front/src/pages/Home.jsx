@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
-import { getMiniDataList } from "../services/api"
-import CategoryNav from "../components/CategoryNav";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { getMiniDataList } from "../services/api";
 import DisplayCard from "../components/DisplayCard";
 
 function Home() {
@@ -9,18 +8,17 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filterCategory, setFilterCategory] = useState(null);
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 12; // Number of cards per page
+  const pageSize = 12;
+  const location = useLocation();
 
   useEffect(() => {
     async function fetchMinis() {
       try {
         const data = await getMiniDataList();
-        // Expecting data in the format: {mini_data_list: [...]}
         setMinis(data.mini_data_list);
       } catch (error) {
-        console.log('Error fetching mini data: ', error);
+        console.error("Error fetching mini data:", error);
         setError(error);
       } finally {
         setLoading(false);
@@ -28,6 +26,12 @@ function Home() {
     }
     fetchMinis();
   }, []);
+
+  // Update the filter category if it comes from navigation state
+  useEffect(() => {
+    setFilterCategory(location.state?.category || null);
+    setCurrentPage(1); // Reset to the first page
+  }, [location.state]);
 
   if (loading) {
     return (
@@ -66,46 +70,42 @@ function Home() {
     <div className="h-full flex flex-col">
       {/* Home header */}
       <header className="p-8 flex border-b-2 mb-2 ml-2">
-        <h1 className="text-2xl font-stretch-semi-condensed font-bold text-[var(--color-neon-green)]">40K Accessories & Minis</h1>
+        <h1 className="text-2xl font-stretch-semi-condensed font-bold text-[var(--color-neon-green)]">
+          40K Accessories & Minis
+        </h1>
       </header>
 
-      {/* Main content with sidebar and cards */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar */}
-        <CategoryNav onCategorySelect={(cat) => { setFilterCategory(cat); setCurrentPage(1); }} selectedCategory={filterCategory} />
+      {/* Main Content */}
+      <main className="flex-1 ml-4 p-4 overflow-y-auto">
+        <div className="grid grid-cols-4 gap-4">
+          {currentMinis.map((mini) => (
+            <Link to={`/mini/${mini.id}`} key={mini.id}>
+              <DisplayCard mini={mini} />
+            </Link>
+          ))}
+        </div>
 
-        {/* Main Content */}
-        <main className="flex-1 ml-4 p-4 overflow-y-auto">
-          <div className="grid grid-cols-4 gap-4">
-            {currentMinis.map((mini) => (
-              <Link to={`/mini/${mini.id}`} key={mini.id}>
-                <DisplayCard mini={mini} />
-              </Link>
-            ))}
-          </div>
-
-          {/* Pagination Controls */}
-          <div className="flex justify-center items-center mt-4 space-x-4">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded disabled:opacity-50 transition-colors duration-200"
-            >
-              Prev
-            </button>
-            <span className="text-[var(--color-imperial-gold)]">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded disabled:opacity-50 transition-colors duration-200"
-            >
-              Next
-            </button>
-          </div>
-        </main>
-      </div>
+        {/* Pagination Controls */}
+        <div className="flex justify-center items-center mt-4 space-x-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded disabled:opacity-50 transition-colors duration-200"
+          >
+            Prev
+          </button>
+          <span className="text-[var(--color-imperial-gold)]">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded disabled:opacity-50 transition-colors duration-200"
+          >
+            Next
+          </button>
+        </div>
+      </main>
     </div>
   );
 }
