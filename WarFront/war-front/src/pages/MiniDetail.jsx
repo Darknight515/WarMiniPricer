@@ -5,15 +5,26 @@ import { getMiniDetail } from "../services/api";
 import { Line } from "react-chartjs-2";
 import { normalizeFaction } from "../utils/helper";
 import {
-  Chart,
+  Chart as ChartJS,
   LineElement,
   CategoryScale,
   LinearScale,
   PointElement,
+  Title,
+  Tooltip,
+  Legend
 } from "chart.js"
 
 //Registering Chart.js components
-Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function MiniDetail() {
   const { miniId } = useParams();
@@ -82,7 +93,17 @@ function MiniDetail() {
         },
         ticks: {
           color: "var(--color-off-white)",
-        },
+          maxRotation: 45, // Rotate labels for better fit
+          minRotation: 45,
+          callback: function(value, index, values) {
+            // Format the date to be more compact
+            const date = new Date(this.getLabelForValue(value));
+            return date.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric'
+            });
+          }
+        }
       },
       y: {
         title: {
@@ -92,16 +113,55 @@ function MiniDetail() {
         },
         ticks: {
           color: "var(--color-off-white)",
-        },
-      },
+          callback: function(value) {
+            return '$' + value.toFixed(2);
+          }
+        }
+      }
     },
     plugins: {
       legend: {
         labels: {
           color: "var(--color-off-white)",
-        },
+        }
       },
+      tooltip: {
+        enabled: true,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: 'white',
+        bodyColor: 'var(--color-off-white)',
+        padding: 10,
+        callbacks: {
+          title: function(tooltipItems) {
+            const date = new Date(tooltipItems[0].label);
+            return date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+          },
+          label: function(context) {
+            const price = Number(context.raw);
+            return `Price: $${isNaN(price) ? '0.00' : price.toFixed(2)}`;
+          }
+        }
+      }
     },
+    interaction: {
+      mode: 'nearest',
+      axis: 'x',
+      intersect: false
+    },
+    elements: {
+      point: {
+        radius: 4,
+        hoverRadius: 6,
+        backgroundColor: "var(--color-imperial-gold)",
+        borderColor: "var(--color-off-white)",
+        borderWidth: 2,
+        hoverBorderWidth: 3
+      }
+    }
   };
 
 
