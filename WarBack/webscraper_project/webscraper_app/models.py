@@ -24,7 +24,7 @@ class MSRP(models.Model):
         db_table = 'MSRP'
 
 class CurrentPrice(models.Model):
-    mini = models.ForeignKey(MiniData, on_delete=models.CASCADE, related_name='current_prices')
+    mini = models.OneToOneField(MiniData, on_delete=models.CASCADE, related_name='current_prices')
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
