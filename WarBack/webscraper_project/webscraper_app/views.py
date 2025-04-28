@@ -13,12 +13,14 @@ import json
 
 def mini_data_list(request):
     # Get all minis with their current prices
+    minis = MiniData.objects.all()
     mini_data_list = []
-    minis = MiniData.objects.select_related('current_prices').all()
     for mini in minis:
         try:
+            # current_price = mini.current_prices.first()
             current_price = CurrentPrice.objects.get(mini=mini)
-            price = str(current_price.price)
+            # price = str(current_price.price) if current_price else None
+            price = str(current_price.price) if minis else None
         except CurrentPrice.DoesNotExist:
             price = None
 
