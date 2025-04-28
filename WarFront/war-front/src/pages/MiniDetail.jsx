@@ -142,6 +142,8 @@ function MiniDetail() {
         </div>
         {/* Description */}
         <hr />
+        <div>
+        </div>
       </div>
     </div>
   )
