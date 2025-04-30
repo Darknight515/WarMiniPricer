@@ -189,33 +189,39 @@ function MiniDetail() {
       </div>
       <hr />
       {/* Row After image & charts */}
-      <div>
-        {/* Mini Details */}
-        <div className="px-4 sm:px-0">
-          <h3 className="text-base/7 font-semibold text-gray-900">Mini Details:</h3>
+
+      {/* Test column area */}
+      <div className="grid grid-cols-2 gap-8 mt-8">
+
+        {/* Mini Details Card - Left Column */}
+      <div className="bg-[var(--color-dark-grey)] rounded-lg shadow-lg overflow-hidden]">
+        {/* Card Header */}
+        <div className="px-6 py-4 border-b border-[var(--color-imperial-gold)]">
+          <h3 className="text-xl font-semibold text-[var(--color-off-white)]">Mini Details:</h3>
         </div>
 
-        <div className="border-t border-gray-100">
-          <dl className="divide-y divide-gray-200">
-            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
-              <dt className="text-gray-500">Name</dt>
-              <dd className="text-gray-900">{mini.name}</dd>
+        {/* Card Content */}
+        <div className="p-6">
+          <dl className="grid gap-4">
+            <div className="grid grid-cols-3 items-center">
+              <dt className="text-[var(--color-off-white)] font-medium">Name:</dt>
+              <dd className="text-[var(--color-off-white)] col-span-2">{mini.name}</dd>
             </div>
-            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
-              <dt className="text-gray-500">Faction</dt>
-              <dd className="text-gray-900">{normalizeFaction(mini.faction)}</dd>
+            <div className="grid grid-cols-3 items-center">
+              <dt className="text-[var(--color-off-white)] font-medium">Faction:</dt>
+              <dd className="text-[var(--color-off-white)] col-span-2">{normalizeFaction(mini.faction)}</dd>
             </div>
-            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
-              <dt className="text-gray-500">MSRP Price</dt>
-              <dd className="text-gray-900">${msrp}</dd>
+            <div className="grid grid-cols-3 items-center">
+              <dt className="text-[var(--color-off-white)] font-medium">MSRP Price:</dt>
+              <dd className="text-[var(--color-off-white)] col-span-2">${msrp}</dd>
             </div>
-            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
-              <dt className="text-gray-500">Current Price</dt>
-              <dd className="text-gray-900">${current_price}</dd>
+            <div className="grid grid-cols-3 items-center">
+              <dt className="text-[var(--color-off-white)] font-medium">Current Price:</dt>
+              <dd className="text-[var(--color-off-white)] col-span-2">${current_price}</dd>
             </div>
-            <div className="py-1 flex justify-between text-sm font-medium text-gray-900">
-              <dt className="text-gray-500">Discount:</dt>
-              <dd className="text-gray-900">{percentage}% (${(msrp - current_price).toFixed(2)})</dd>
+            <div className="grid grid-cols-3 items-center">
+              <dt className="text-[var(--color-off-white)] font-medium">Discount:</dt>
+              <dd className="text-[var(--color-off-white)] col-span-2">{percentage}% (${(msrp - current_price).toFixed(2)})</dd>
             </div>
           </dl>
         </div>
@@ -224,6 +230,20 @@ function MiniDetail() {
         <div>
         </div>
       </div>
+
+      {/* Right column - Placeholder */}
+      <div className="bg-[var(--color-dark-grey)] rounded-lg shadow-lg overflow-hidden">
+        <div className="px-6 py-4 border-b border-[var(--color-imperial-gold)]">
+          <h3 className="text-xl font-semibold text-[var(--color-off-white)]">Additional Information</h3>
+        </div>
+        <div className="p-6">
+          <p className="text-[var(--color-off-white)]">Content coming soon...</p>
+        </div>
+      </div>
+      </div>
+      {/* END Test column ares */}
+
+      {/* Mini Details Card */}
     </div>
   )
 }
