@@ -14,6 +14,7 @@ import {
   Tooltip,
   Legend
 } from "chart.js"
+import OrderModal from "../components/OrderModal";
 
 //Registering Chart.js components
 ChartJS.register(
@@ -36,6 +37,13 @@ function MiniDetail() {
   const [randomInventory, setRandomInventory] = useState(null);
   const [randomPreOrders, setRandomPreOrders] = useState(null);
   const [recommendedPrice, setRecommendedPrice] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState('');
+
+  const handleOrderClick = (type) =>{
+    setModalType(type);
+    setIsModalOpen(true);
+  }
 
   useEffect(() => {
     async function fetchMiniDetail() {
@@ -280,21 +288,21 @@ function MiniDetail() {
                   <div className="flex space-x-4">
                     {/* Button 1: Example 'Edit' */}
                     <button
-                      onClick={() => console.log('Edit clicked')} // Replace with your actual handler, e.g., handleEdit()
+                      onClick={() => handleOrderClick('store')} 
                       className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
                     >
                       Store Order
                     </button>
                     {/* Button 2: Example 'Delete' */}
                     <button
-                      onClick={() => console.log('Delete clicked')} // Replace with your actual handler, e.g., handleDelete()
+                      onClick={() => handleOrderClick('delivery')}
                       className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
                     >
                      Delivery Order
                     </button>
                     {/* Button 3: Example 'View' */}
                     <button
-                      onClick={() => console.log('View clicked')} // Replace with your actual handler, e.g., handleView()
+                      onClick={() => handleOrderClick('supplier')} // Replace with your actual handler, e.g., handleView()
                       className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
                     >
                       Contact SP
@@ -309,7 +317,14 @@ function MiniDetail() {
       {/* END Test column ares */}
 
       {/* Mini Details Card */}
+    <OrderModal 
+      isOpen={isModalOpen} 
+      onClose={() => setIsModalOpen(false)} 
+      type={modalType} 
+      miniDetail={miniDetail}
+    />
     </div>
+
   )
 }
 
