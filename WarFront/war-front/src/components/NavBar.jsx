@@ -11,7 +11,7 @@ function NavBar() {
                     <img src={WarLogo} alt="WarLogo" className="max-w-20" />
                 </Link>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 mt-4">
                 <Link to="/" className="nav-link">
                     <HomeIcon className="w-10 h-10 rounded bg-[var(--color-imperial-gold)] p-2 hover:bg-[var(--color-neon-green)] transition-colors" />
                 </Link>
