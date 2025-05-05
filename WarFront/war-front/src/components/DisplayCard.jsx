@@ -19,8 +19,8 @@ function DisplayCard({ mini }) {
       rounded-md
       bg-[var(--color-dark-grey)]
       border border-[var(--color-imperial-gold)]
-      max-w-60
-      max-h-90
+      max-w-120
+      max-h-100
       min-h-90
       flex
       flex-col
@@ -36,10 +36,10 @@ function DisplayCard({ mini }) {
             </div>
             <div className="card-info max-h-auto max-w-full overflow-hidden">
                 <div className="text-center mt-2 truncate font-medium">{mini.name}</div>
-                <div className="card-pricing overflow-hidden truncate text-[var(--color-imperial-gold)]">
+                <div className="card-pricing overflow-hidden truncate text-[var(--color-imperial-gold)] flex justify-center items-center">
                     Price: {displayPrice}
                 </div>
-                <div className="card-buttons flex gap-2 mt-2">
+                <div className="card-buttons flex gap-2 mt-2 justify-center items-center">
                     <button
                         type="button"
                         className="px-4 py-2 bg-[var(--color-imperial-gold)] hover:bg-[var(--color-neon-green)] text-[var(--color-dark-grey)] rounded transition-colors duration-200">
