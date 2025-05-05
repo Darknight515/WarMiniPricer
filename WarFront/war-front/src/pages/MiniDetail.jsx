@@ -40,10 +40,28 @@ function MiniDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState('');
 
-  const handleOrderClick = (type) =>{
+  const handleOrderSubmit = (orderType, orderData) => {
+    console.log("Order Submitted:", orderType, orderData);
+    const quantity = parseInt(orderData?.quantity, 10) || 0;
+
+    if (quantity > 0) {
+      if (orderType === 'store') {
+        // Store order increases inventory
+        setRandomInventory(prevInventory => (prevInventory !== null ? prevInventory + quantity : quantity));
+        // Optionally, you could decrease pre-orders if this fulfills them, but based on current setup, just increasing inventory seems right.
+      } else if (orderType === 'delivery') {
+        // Delivery order decreases inventory
+        setRandomInventory(prevInventory => (prevInventory !== null ? Math.max(0, prevInventory - quantity) : 0)); // Ensure inventory doesn't go below 0
+      }
+      // For 'supplier' type, you might trigger an API call or other logic instead of changing local state directly.
+    }
+    // Add logic here to potentially send the orderData to an API endpoint
+  };
+
+  const openOrderModal = (type) => {
     setModalType(type);
     setIsModalOpen(true);
-  }
+  };
 
   useEffect(() => {
     async function fetchMiniDetail() {
@@ -288,21 +306,21 @@ function MiniDetail() {
                   <div className="flex space-x-4">
                     {/* Button 1: Example 'Edit' */}
                     <button
-                      onClick={() => handleOrderClick('store')} 
-                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                      onClick={() => openOrderModal('store')} 
+                      className="px-3 py-1 bg-[var(--color-imperial-gold)] text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
                     >
                       Store Order
                     </button>
                     {/* Button 2: Example 'Delete' */}
                     <button
-                      onClick={() => handleOrderClick('delivery')}
+                      onClick={() => openOrderModal('delivery')}
                       className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
                     >
                      Delivery Order
                     </button>
                     {/* Button 3: Example 'View' */}
                     <button
-                      onClick={() => handleOrderClick('supplier')} // Replace with your actual handler, e.g., handleView()
+                      onClick={() => openOrderModal('supplier')} // Replace with your actual handler, e.g., handleView()
                       className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
                     >
                       Contact SP
@@ -322,6 +340,7 @@ function MiniDetail() {
       onClose={() => setIsModalOpen(false)} 
       type={modalType} 
       miniDetail={miniDetail}
+      onOrderSubmit={handleOrderSubmit}
     />
     </div>
 

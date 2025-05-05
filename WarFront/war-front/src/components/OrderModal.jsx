@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 
-function OrderModal({ isOpen, onClose, type, miniDetail }) {
-    if (!isOpen) return null;
+function OrderModal({ isOpen, onClose, type, miniDetail, onOrderSubmit }) {
+    const [formData, setFormData] = useState({});
+    const [totalCost, setTotalCost] = useState(0);
 
     // Define different content based on the modal type
 
@@ -11,7 +12,7 @@ function OrderModal({ isOpen, onClose, type, miniDetail }) {
             title: "Store Order",
             fields: [
                 { label: "Quantity", type: "number", name: "quantity" },
-                { label: "Due Date", type: "date", name: "dueDate" },
+                { label: "Order Date", type: "date", name: "dueDate" },
                 { label: "Notes", type: "textarea", name: "notes" },
             ]
         },
@@ -29,12 +30,39 @@ function OrderModal({ isOpen, onClose, type, miniDetail }) {
             fields: [
                 { label: "Subject", type: "text", name: "subject" },
                 { label: "Message", type: "textarea", name: "message" },
-                { label: "Preferred Contact Methos", type: "Select", name: "contactMethod", options: ["Email", "Phone", "In-Person"] },
+                { label: "Preferred Contact Methos", type: "select", name: "contactMethod", options: ["Email", "Phone", "In-Person"] },
             ]
         },
     };
 
     const content = modalContent[type] || modalContent.store; // Default to store if type is not recognized
+
+    // Reset form data when modal opens or type changes:
+    useEffect(() => {
+        setFormData({});
+        setTotalCost(0);
+    }, [isOpen, type]);
+
+    if (!isOpen) return null;
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        const newFormData = { ...formData, [name]: value };
+        setFormData(newFormData);
+
+        // Calculate total cost if quantity and price are available
+        if ((type === 'store' || type === 'delivery') && name === 'quantity' && miniDetail?.current_price) {
+            const quantity = parseInt(value, 10) || 0;
+            const price = parseFloat(miniDetail.current_price) || 0;
+            setTotalCost((quantity * price).toFixed(2));
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent default form submission
+        onOrderSubmit(type, formData); // Pass type and data back to parent
+        onClose(); // Close the modal
+    };
 
     return (
         <div className="fixed inset-0 bg-black opacity-90 flex items-center justify-center z-50">
@@ -56,12 +84,16 @@ function OrderModal({ isOpen, onClose, type, miniDetail }) {
                                     <textarea
                                         name={field.name}
                                         className="w-full p-2 rounded bg-gray-700 text-[var(--color-off-white)]"
+                                        value={formData[field.name] || ''}
+                                        onChange={handleInputChange}
                                         rows="3"
                                     />
                                 ) : field.type === 'select' ? (
                                     <select
                                         name={field.name}
                                         className="w-full p-2 rounded bg-gray-700 text-[var(--color-off-white)]"
+                                        value={formData[field.name] || ''}
+                                        onChange={handleInputChange}
                                     >
                                         {field.options.map(option => (
                                             <option key={option} value={option}>{option}</option>
@@ -72,10 +104,19 @@ function OrderModal({ isOpen, onClose, type, miniDetail }) {
                                         type={field.type}
                                         name={field.name}
                                         className="w-full p-2 rounded bg-gray-700 text-[var(--color-off-white)]"
+                                        value={formData[field.name] || ''}
+                                        onChange={handleInputChange}
+                                        min={field.type === 'number' ? 1 : undefined}
                                     />
                                 )}
                             </div>
                         ))}
+                        {/* Display Total Cost for relevant types */}
+                        {(type === 'store' || type === 'delivery') && miniDetail?.current_price && (
+                            <div className="mt-4 text-[var(--color-off-white)]">
+                                <strong>Total Cost: ${totalCost}</strong> (Based on current price: ${miniDetail.current_price})
+                            </div>
+                        )}
                         <div className="flex justify-end space-x-4 mt-6">
                             <button
                                 type="button"
